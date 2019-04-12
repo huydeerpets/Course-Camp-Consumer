@@ -14,19 +14,17 @@ export default class IndexComponent extends React.Component {
   state = {
     loaded: false
   };
-  
+
   async componentDidMount() {
     $(window).scrollTop(0);
     if (this.props.isRequestFromServer) {
       setTimeout(async () => {
         await this.setState({ loaded: true });
         handleScrollSkewAnimation();
-        animateElementsOnLoad();
       }, 500);
     } else {
       await this.setState({ loaded: true });
       handleScrollSkewAnimation();
-      animateElementsOnLoad();
     }
   }
 

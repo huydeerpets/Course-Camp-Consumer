@@ -1,6 +1,6 @@
 import React from 'react';
 import ReviewSections from '../../globalComponents/reviewSections/index'
-import {Button, Modal, Progress} from 'antd';
+import {Button, Modal, Progress, message} from 'antd';
 import { Link, Router } from '../../../../routes';
 import {getTotalCoursePoints, getTotalUserCoursePoints} from "../../../../globalHelpers/handleCoursePoints";
 import ReviewCourse from "../../globalComponents/reviewCourse/index";
@@ -53,23 +53,29 @@ export default class Track extends React.Component {
                 </div>
                 <h1 style={{ textAlign: 'center', fontSize: 18, color: 'rgb(80, 80, 85)', marginTop: 35, marginBottom: 30 }}>{ this.props.course.title }</h1>
     
-                <Button className="review-course-btn" type='primary' onClick={ () => container.updateState('showReviewModal', true) }>Review Course</Button>
+                <Button className="review-course-btn" type='primary' onClick={ () => this.props.auth.authenticated ? container.updateState('showReviewModal', true) : message.info('Please sign up to submit a review') }>Review Course</Button>
+
                 <ReviewCourse container={ container } { ...this.props } />
         
                 <div className='course-progress-xp' id='course-track-element-container'>
                   <h1>Course Xp gained</h1>
-                  <div className='progress-container'>
-                    <Progress width={170} format={() => `${ getTotalUserCoursePoints(this.props.course._id, this.props.auth) }/${+getTotalCoursePoints(this.props.course)} xp earned`} type="circle" percent={
-                      (+getTotalUserCoursePoints(this.props.course._id, this.props.auth)
-                        /
-                        +getTotalCoursePoints(this.props.course)) * 100 } />
+                  <div>
+                    <div className='progress-container'>
+                      <Progress width={170} format={() => `${ getTotalUserCoursePoints(this.props.course._id, this.props.auth) }/${+getTotalCoursePoints(this.props.auth.authenticated, this.props.course)} xp earned`} type="circle" percent={
+                        (+getTotalUserCoursePoints(this.props.course._id, this.props.auth)
+                          /
+                          +getTotalCoursePoints(this.props.auth.authenticated, this.props.course)) * 100 } />
+                    </div>
+                    { getTotalUserCoursePoints(this.props.course._id, this.props.auth) === getTotalCoursePoints(this.props.auth.authenticated, this.props.course)
+                      ? <p style={{ textAlign: 'center', fontSize: 16, color: '#87D068', paddingBottom: 30 }}>
+                        { this.props.auth.authenticated
+                          ? <span>Awesome job completing this course!</span>
+                          : <span style={{ color: 'rgb(60, 60, 65)' }}>Sign up to save your score</span>
+                        }
+                      </p>
+                      : null
+                    }
                   </div>
-                  { getTotalUserCoursePoints(this.props.course._id, this.props.auth) === getTotalCoursePoints(this.props.course)
-                    ? <p style={{ textAlign: 'center', fontSize: 16, color: '#87D068', paddingBottom: 30 }}>
-                      Awesome job completing this course!
-                    </p>
-                    : null
-                  }
                 </div>
         
                 <ReviewSections { ...this.props } courseNotInState={ true } fromCourseTrack={ true } />

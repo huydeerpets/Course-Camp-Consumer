@@ -39,7 +39,6 @@ class Track extends React.Component {
 
 Track.getInitialProps = async (ctx) => {
   try {
-    handleAuthentication(ctx);
     const isRequestFromServer = typeof window === 'undefined';
     
     const courseId = ctx.query.courseId;

@@ -50,7 +50,6 @@ ViewCourseSectionVideo.getInitialProps = async (ctx) => {
   try {
     const isRequestFromServer = typeof window === 'undefined';
     
-    handleAuthentication(ctx);
     const { courseId, sectionIndex, videoIndex } = ctx.query;
     const course = await GraphQlMutate(GraphQlDevURI, `
     {

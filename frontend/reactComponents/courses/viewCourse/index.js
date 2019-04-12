@@ -13,27 +13,24 @@ import {BarLoader} from "react-spinners";
 import { Link } from '../../../../routes';
 import ContinueLearningButton from "./columns/continueLearningButton";
 import EditCourseButton from "./columns/editCourseButton";
-import {animateElementsOnLoad} from "./helpers";
 import Reviews from "./columns/reviews";
 
 export default class ViewCourseComponent extends React.Component {
   state = {
     loaded: false
   };
-  
+
   async componentDidMount() {
     $(window).scrollTop(0);
     if (this.props.isRequestFromServer) {
       setTimeout(async () => {
         await this.setState({ loaded: true });
-        animateElementsOnLoad();
       }, 600);
     } else {
       await this.setState({ loaded: true });
-      animateElementsOnLoad();
     }
   }
-  
+
   render() {
     return (
       <Subscribe to={[AuthContainer]}>

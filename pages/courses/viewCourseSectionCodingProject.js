@@ -17,11 +17,11 @@ class ViewCourseSectionCodingProject extends React.Component {
   state = {
     start: false
   };
-  
+
   componentWillMount() {
     this.setState({ start: checkIfUserHasAccess(this.props.auth, this.props.course, this.props.router) });
   }
-  
+
   render() {
     const { auth, course, currentVideo, currentSection, codingProject, videoIndex, sectionIndex } = this.props;
     return (
@@ -49,7 +49,6 @@ class ViewCourseSectionCodingProject extends React.Component {
 
 ViewCourseSectionCodingProject.getInitialProps = async (ctx) => {
   try {
-    handleAuthentication(ctx);
     const { courseId, sectionIndex, videoIndex } = ctx.query;
     const course = await GraphQlMutate(GraphQlDevURI, `
     {
@@ -72,11 +71,11 @@ ViewCourseSectionCodingProject.getInitialProps = async (ctx) => {
     course.data.data.singleCourse.sections[sectionIndex].videos[videoIndex].codingProject.summary
         = atob(course.data.data.singleCourse.sections[sectionIndex].videos[videoIndex].codingProject.summary);
     const codingProject = course.data.data.singleCourse.sections[sectionIndex].videos[videoIndex].codingProject;
-    
+
     if (!codingProject) {
       return { course: false }
     }
-    
+
     return { course: course.data.data.singleCourse, currentVideo, currentSection, codingProject, sectionIndex, videoIndex }
   } catch(e) {
     return { course: false }

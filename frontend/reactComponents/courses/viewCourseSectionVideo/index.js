@@ -4,7 +4,7 @@ import Video from '../../globalComponents/video/index';
 import ViewCourseContainer from './container';
 import NewQuestionContainer from '../../globalComponents/newQuestion/container';
 import SetStateForVideo from './setStateForVideo';
-import { Button, Icon } from 'antd';
+import { Button, Icon, message } from 'antd';
 import Footer from '../../globalComponents/footer';
 import NewQuestion from '../../globalComponents/newQuestion';
 import TopProgress from '../../courses/reusableComponents/topProgress';
@@ -16,7 +16,7 @@ export default class ViewCourseSectionVideo extends React.Component {
   state = {
     loaded: false
   };
-  
+
   async componentDidMount() {
     $(window).scrollTop(0);
     if (this.props.isRequestFromServer) {
@@ -27,7 +27,7 @@ export default class ViewCourseSectionVideo extends React.Component {
       this.setState({ loaded: true });
     }
   }
-  
+
   render() {
     const { course, currentVideo, currentSection, sectionIndex, videoIndex } = this.props;
     return (
@@ -48,7 +48,7 @@ export default class ViewCourseSectionVideo extends React.Component {
                       <Button.Group style={{ marginLeft: 33 }}>
                         <Button
                           className='create-question-btn'
-                          onClick={ () => newQuestionContainer.updateState('visibility', true) }
+                          onClick={ () => { this.props.auth.authenticated ? newQuestionContainer.updateState('visibility', true) : message.info('Please login to ask a question'); } }
                           style={{ background: this.props.course.color, borderColor: 'rgb(150, 150, 150)' }} type="primary">
                           Ask A Question
                         </Button>

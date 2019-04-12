@@ -16,11 +16,11 @@ class ViewCourseSectionCodingChallenge extends React.Component {
   state = {
     start: false
   };
-  
+
   componentWillMount() {
     this.setState({ start: checkIfUserHasAccess(this.props.auth, this.props.course, this.props.router) });
   }
-  
+
   render() {
     const { auth, course, currentVideo, currentSection, codingChallenge, isRequestFromServer, videoIndex, sectionIndex } = this.props;
     return (
@@ -49,7 +49,6 @@ class ViewCourseSectionCodingChallenge extends React.Component {
 
 ViewCourseSectionCodingChallenge.getInitialProps = async (ctx) => {
   try {
-    handleAuthentication(ctx);
     const isRequestFromServer = typeof window === 'undefined';
     const { courseId, sectionIndex, videoIndex } = ctx.query;
     const course = await GraphQlMutate(GraphQlDevURI, `

@@ -14,11 +14,11 @@ class ViewCourseSectionQuiz extends React.Component {
   state = {
     start: false
   };
-  
+
   componentWillMount() {
     this.setState({ start: checkIfUserHasAccess(this.props.auth, this.props.course, this.props.router) });
   }
-  
+
   render() {
     const { auth, course, currentVideo, currentSection, currentQuiz, sectionIndex, videoIndex, isRequestFromServer } = this.props;
     return (
@@ -47,7 +47,6 @@ class ViewCourseSectionQuiz extends React.Component {
 
 ViewCourseSectionQuiz.getInitialProps = async (ctx) => {
   try {
-    handleAuthentication(ctx);
     const isRequestFromServer = typeof window === 'undefined';
     const { courseId, sectionIndex, videoIndex } = ctx.query;
     const course = await GraphQlMutate(GraphQlDevURI, `

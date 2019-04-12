@@ -14,11 +14,11 @@ class ViewCourseSectionPictureQuiz extends React.Component {
   state = {
     start: false
   };
-  
+
   componentWillMount() {
     this.setState({ start: checkIfUserHasAccess(this.props.auth, this.props.course, this.props.router) });
   }
-  
+
   render() {
     const { auth, course, currentVideo, currentSection, currentQuiz, videoIndex, sectionIndex, isRequestFromServer } = this.props;
     return (
@@ -44,7 +44,6 @@ class ViewCourseSectionPictureQuiz extends React.Component {
 
 ViewCourseSectionPictureQuiz.getInitialProps = async (ctx) => {
   try {
-    handleAuthentication(ctx);
     const isRequestFromServer = typeof window === 'undefined';
     const { courseId, sectionIndex, videoIndex } = ctx.query;
     const course = await GraphQlMutate(GraphQlDevURI, `
@@ -66,11 +65,11 @@ ViewCourseSectionPictureQuiz.getInitialProps = async (ctx) => {
     const currentSection = course.data.data.singleCourse.sections[sectionIndex];
     const currentVideo = course.data.data.singleCourse.sections[sectionIndex].videos[videoIndex];
     const currentQuiz = course.data.data.singleCourse.sections[sectionIndex].videos[videoIndex].pictureQuiz;
-    
+
     if (!currentQuiz) {
       return { course: false }
     }
-    
+
     return { course: course.data.data.singleCourse, currentVideo, currentSection, currentQuiz, sectionIndex, videoIndex, isRequestFromServer }
   } catch(e) {
     return { course: false }

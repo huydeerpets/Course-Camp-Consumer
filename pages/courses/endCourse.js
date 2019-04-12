@@ -13,11 +13,11 @@ class EndCourse extends React.Component {
   state = {
     start: false
   };
-  
+
   componentWillMount() {
     this.setState({ start: checkIfUserHasAccess(this.props.auth, this.props.course, this.props.router) });
   }
-  
+
   render() {
     return (
       <div>
@@ -39,9 +39,8 @@ class EndCourse extends React.Component {
 
 EndCourse.getInitialProps = async (ctx) => {
   try {
-    handleAuthentication(ctx);
     const isRequestFromServer = typeof window === 'undefined';
-    
+
     const courseId = ctx.query.courseId;
     const course = await GraphQlMutate(GraphQlDevURI, `
     query {
